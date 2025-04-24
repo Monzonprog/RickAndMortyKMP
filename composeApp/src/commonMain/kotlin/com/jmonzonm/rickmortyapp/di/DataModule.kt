@@ -1,6 +1,8 @@
 package com.jmonzonm.rickmortyapp.di
 
+import com.jmonzonm.rickmortyapp.data.RepositoryImpl
 import com.jmonzonm.rickmortyapp.data.remote.ApiService
+import com.jmonzonm.rickmortyapp.domain.Repository
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -17,8 +19,8 @@ val dataModule = module {
             install(ContentNegotiation) {
                 json(json = Json { ignoreUnknownKeys = true }, contentType = ContentType.Any)
             }
-            install(DefaultRequest){
-                url{
+            install(DefaultRequest) {
+                url {
                     protocol = URLProtocol.HTTPS
                     host = "rickandmortyapi.com"
                     //parameters.append("key", "")
@@ -28,4 +30,5 @@ val dataModule = module {
     }
 
     factoryOf(::ApiService)
+    factory<Repository> { RepositoryImpl(get()) }
 }
