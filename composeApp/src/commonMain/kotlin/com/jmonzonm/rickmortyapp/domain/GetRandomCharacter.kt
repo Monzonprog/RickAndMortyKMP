@@ -1,8 +1,10 @@
 package com.jmonzonm.rickmortyapp.domain
 
+import com.jmonzonm.rickmortyapp.domain.model.CharacterModel
+
 class GetRandomCharacter(private val repository: Repository) {
-    suspend fun invoke() {
+    suspend operator fun invoke(): CharacterModel {
         val random = (1..826)
-        repository.getSingleCharacter(id = random.toString())
+        return repository.getSingleCharacter(id = random.toString())
     }
 }
