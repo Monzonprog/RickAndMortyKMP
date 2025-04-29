@@ -53,6 +53,7 @@ kotlin {
             implementation(libs.ktor.client.negotiation)
             implementation(libs.kotlin.serialization)
             implementation(libs.viewmodel.compose)
+            implementation(libs.ktor.client.logging)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
