@@ -10,8 +10,8 @@ data class CharacterResponse(
     val gender: String,*/
     val id: Int,
     val image: String,
-    /*val location: Location,
     val name: String,
+    /*val location: Location,
     val origin: Origin,
     val species: String,*/
     val status: String,
@@ -22,6 +22,7 @@ data class CharacterResponse(
         return CharacterModel(
             id = id,
             image = image,
+            name = name,
             isAlive = status.lowercase() == "alive"
         )
     }

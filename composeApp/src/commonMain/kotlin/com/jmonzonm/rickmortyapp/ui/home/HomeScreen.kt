@@ -1,10 +1,12 @@
 package com.jmonzonm.rickmortyapp.ui.home
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.ui.Modifier
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -20,8 +22,8 @@ fun HomeScreen() {
     val items = listOf(Episodes(), Characters())
     val navController = rememberNavController()
 
-    Scaffold(bottomBar = { BottomNavigation(items, navController) }) {
-        Box{
+    Scaffold(bottomBar = { BottomNavigation(items, navController) }) { paddingValues ->
+        Box(modifier = Modifier.padding(paddingValues)) {
             NavigationBottomWrapper(navController)
         }
     }
@@ -36,10 +38,9 @@ fun BottomNavigation(items: List<BottomBarItem>, navController: NavHostControlle
         items.forEach { item ->
             NavigationBarItem(
                 icon = item.icon,
-                label = { Text(item.title) }
-                ,
+                label = { Text(item.title) },
                 onClick = {
-                    navController.navigate(item.route){
+                    navController.navigate(item.route) {
                         navController.graph.startDestinationRoute?.let { route ->
                             popUpTo(route) {
                                 saveState = true

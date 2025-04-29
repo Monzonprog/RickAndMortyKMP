@@ -5,10 +5,10 @@ import com.jmonzonm.rickmortyapp.di.initKoin
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.logger.AndroidLogger
 
-class RickMortyApp : Application(){
+class RickMortyApp : Application() {
     override fun onCreate() {
         super.onCreate()
-        initKoin{
+        initKoin {
             AndroidLogger()
             androidContext(this@RickMortyApp)
         }
