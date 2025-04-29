@@ -20,10 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import com.jmonzonm.rickmortyapp.domain.model.CharacterModel
 import com.jmonzonm.rickmortyapp.ui.core.ex.vertical
 import org.koin.compose.viewmodel.koinViewModel
@@ -55,6 +57,12 @@ fun CharacterOfTheDay(characterModel: CharacterModel? = null) {
 
             Box(contentAlignment = Alignment.BottomStart) {
                 Box(Modifier.fillMaxSize().background(Color.Green.copy(alpha = 0.5f)))
+                AsyncImage(
+                    model = characterModel.image,
+                    contentDescription = "Character of the day",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
