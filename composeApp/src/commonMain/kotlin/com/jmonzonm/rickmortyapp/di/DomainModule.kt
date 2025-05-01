@@ -1,11 +1,11 @@
 package com.jmonzonm.rickmortyapp.di
 
-import com.jmonzonm.rickmortyapp.domain.GetAllCharacters
-import com.jmonzonm.rickmortyapp.domain.GetRandomCharacter
+import com.jmonzonm.rickmortyapp.domain.GetAllCharactersUseCase
+import com.jmonzonm.rickmortyapp.domain.GetRandomCharacterUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 val domainModule = module {
-    factoryOf(::GetRandomCharacter)
-    factoryOf(::GetAllCharacters)
+    factoryOf(::GetRandomCharacterUseCase)
+    factoryOf(::GetAllCharactersUseCase)
 }
