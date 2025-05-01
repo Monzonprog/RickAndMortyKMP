@@ -58,6 +58,7 @@ kotlin {
             implementation(libs.coil.network.ktor3)
             implementation(libs.paging.compose.common)
             implementation(libs.paging.common)
+            implementation(libs.kotlinx.datetime)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)

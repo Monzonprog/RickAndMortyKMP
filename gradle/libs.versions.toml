@@ -23,6 +23,7 @@ ktor = "3.1.2"
 viewmodel = "2.8.4"
 coilCompose = "3.1.0"
 pagingComposeCommon = "3.3.0-alpha02-0.4.0"
+kotlinxDatetime = "0.6.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -65,6 +66,8 @@ coil-network-ktor3 = { module = "io.coil-kt.coil3:coil-network-ktor3", version.r
 paging-common = {module = "app.cash.paging:paging-common", version.ref = "pagingComposeCommon"}
 paging-compose-common = {module = "app.cash.paging:paging-compose-common", version.ref = "pagingComposeCommon"}
 
+#Date
+kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime"}
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
