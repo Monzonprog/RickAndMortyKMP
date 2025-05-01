@@ -5,7 +5,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -92,10 +91,10 @@ fun CharactersGridList(characters: LazyPagingItems<CharacterModel>, state: Chara
                     }
 
                 }
-                if (characters.loadState.refresh is LoadState.Loading) {
+                if (characters.loadState.append is LoadState.Loading) {
                     item(span = { GridItemSpan(2) }) {
                         Box(
-                            modifier = Modifier.fillMaxSize(),
+                            modifier = Modifier.fillMaxHeight().height(100.dp),
                             contentAlignment = Alignment.Center
                         ) {
                             CircularProgressIndicator(
@@ -149,11 +148,11 @@ fun CharacterItemList(characterModel: CharacterModel) {
 fun CharacterOfTheDay(characterModel: CharacterModel? = null) {
     if (characterModel == null) {
         Box(
+            contentAlignment = Alignment.Center,
             modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
+                .fillMaxSize()
         ) {
-            CircularProgressIndicator()
+            CircularProgressIndicator(color = Color.Green)
         }
     } else {
         Card(modifier = Modifier.fillMaxWidth().height(400.dp), shape = RoundedCornerShape(12)) {
