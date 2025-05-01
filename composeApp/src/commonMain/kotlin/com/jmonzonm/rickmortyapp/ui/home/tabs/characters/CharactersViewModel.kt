@@ -2,7 +2,8 @@ package com.jmonzonm.rickmortyapp.ui.home.tabs.characters
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jmonzonm.rickmortyapp.domain.GetRandomCharacter
+import com.jmonzonm.rickmortyapp.domain.GetAllCharactersUseCase
+import com.jmonzonm.rickmortyapp.domain.GetRandomCharacterUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +13,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class CharactersViewModel(private val getRandomCharacter: GetRandomCharacter) : ViewModel() {
+class CharactersViewModel(
+    private val getRandomCharacter: GetRandomCharacterUseCase,
+    private val getAllCharactersUseCase: GetAllCharactersUseCase
+) : ViewModel() {
 
     private val _state = MutableStateFlow<CharactersState>(CharactersState())
     val state: StateFlow<CharactersState> = _state
@@ -23,6 +27,11 @@ class CharactersViewModel(private val getRandomCharacter: GetRandomCharacter) : 
                 getRandomCharacter()
             }
             _state.update { it.copy(characterOfTheDay = result) }
+            getAllCharacters()
         }
+    }
+
+    private suspend fun getAllCharacters() {
+        _state.update { state -> state.copy(characters = getAllCharactersUseCase()) }
     }
 }
