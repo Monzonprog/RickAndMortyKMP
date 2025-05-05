@@ -4,10 +4,12 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.jmonzonm.rickmortyapp.data.database.RickMortyDatabase
+import com.jmonzonm.rickmortyapp.data.database.entity.CharacterOfTheDayEntity
 import com.jmonzonm.rickmortyapp.data.remote.ApiService
 import com.jmonzonm.rickmortyapp.data.remote.paging.CharactersPagingSource
 import com.jmonzonm.rickmortyapp.domain.Repository
 import com.jmonzonm.rickmortyapp.domain.model.CharacterModel
+import com.jmonzonm.rickmortyapp.domain.model.CharacterOfTheDayModel
 import kotlinx.coroutines.flow.Flow
 
 class RepositoryImpl(
@@ -30,7 +32,11 @@ class RepositoryImpl(
             pagingSourceFactory = { charactersPagingSource }).flow
     }
 
-    override suspend fun getCharacterDB() {
-        rickMortyDatabase.getPreferenceDao().getCharacterOfTheDayDB()
+    override suspend fun getCharacterDB(): CharacterOfTheDayModel? {
+        return rickMortyDatabase.getPreferenceDao().getCharacterOfTheDayDB()?.toDomain()
+    }
+
+    override suspend fun saveCharacterDB(characterOfTheDayModel: CharacterOfTheDayModel) {
+        rickMortyDatabase.getPreferenceDao().saveCharacter(characterOfTheDayModel.toEntity())
     }
 }
