@@ -7,9 +7,14 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.kspCompose)
 }
 
 kotlin {
+    sourceSets.commonMain {
+        kotlin.srcDirs("build/generated/ksp/metadata")
+    }
+
     androidTarget {
         @OptIn(ExperimentalKotlinGradlePluginApi::class)
         compilerOptions {
@@ -59,6 +64,8 @@ kotlin {
             implementation(libs.paging.compose.common)
             implementation(libs.paging.common)
             implementation(libs.kotlinx.datetime)
+            implementation(libs.room.runtime)
+            implementation(libs.androidx.sqlite.bundled)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
@@ -91,10 +98,19 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
+    dependencies {
+        debugImplementation(compose.uiTooling)
+    }
+}
+ksp {
+    arg("room.schemaLocation", "${projectDir}/schemas")
 }
 
 dependencies {
-    implementation(libs.androidx.material3.android)
-    debugImplementation(compose.uiTooling)
+    add("kspCommonMainMetadata", libs.room.compiler)
+    add("kspAndroid", libs.room.compiler)
+    add("kspIosX64", libs.room.compiler)
+    add("kspIosArm64", libs.room.compiler)
+    add("kspIosSimulatorArm64", libs.room.compiler)
 }
-
