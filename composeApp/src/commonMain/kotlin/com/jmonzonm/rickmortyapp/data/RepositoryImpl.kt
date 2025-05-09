@@ -6,9 +6,11 @@ import androidx.paging.PagingData
 import com.jmonzonm.rickmortyapp.data.database.RickMortyDatabase
 import com.jmonzonm.rickmortyapp.data.remote.ApiService
 import com.jmonzonm.rickmortyapp.data.remote.paging.CharactersPagingSource
+import com.jmonzonm.rickmortyapp.data.remote.paging.EpisodesPagingSource
 import com.jmonzonm.rickmortyapp.domain.Repository
 import com.jmonzonm.rickmortyapp.domain.model.CharacterModel
 import com.jmonzonm.rickmortyapp.domain.model.CharacterOfTheDayModel
+import com.jmonzonm.rickmortyapp.domain.model.EpisodeModel
 import kotlinx.coroutines.flow.Flow
 
 class RepositoryImpl(
@@ -38,5 +40,12 @@ class RepositoryImpl(
 
     override suspend fun saveCharacterDB(characterOfTheDayModel: CharacterOfTheDayModel) {
         rickMortyDatabase.getPreferenceDao().saveCharacter(characterOfTheDayModel.toEntity())
+    }
+
+    override suspend fun getAllEpisodes(): Flow<PagingData<EpisodeModel>> {
+        return Pager(
+            config = PagingConfig(pageSize = MAX_ITEMS, prefetchDistance = PREFETCH_ITEMS),
+            pagingSourceFactory = { episodesPagingSource }
+        ).flow
     }
 }
