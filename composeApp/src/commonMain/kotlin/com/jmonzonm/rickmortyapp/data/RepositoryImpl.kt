@@ -4,7 +4,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.jmonzonm.rickmortyapp.data.database.RickMortyDatabase
-import com.jmonzonm.rickmortyapp.data.database.entity.CharacterOfTheDayEntity
 import com.jmonzonm.rickmortyapp.data.remote.ApiService
 import com.jmonzonm.rickmortyapp.data.remote.paging.CharactersPagingSource
 import com.jmonzonm.rickmortyapp.domain.Repository
@@ -15,6 +14,7 @@ import kotlinx.coroutines.flow.Flow
 class RepositoryImpl(
     private val api: ApiService,
     private val charactersPagingSource: CharactersPagingSource,
+    private val episodesPagingSource: EpisodesPagingSource,
     private val rickMortyDatabase: RickMortyDatabase
 ) : Repository {
     companion object {
