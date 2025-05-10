@@ -10,7 +10,7 @@ data class EpisodeResponse(
     val id: Int,
     val name: String,
     val episode: String,
-    val character: List<String>
+    val characters: List<String>
 ) {
     fun toDomain(): EpisodeModel {
         val season = getSeasonFromEpisodeCode(episode)
@@ -18,7 +18,7 @@ data class EpisodeResponse(
             id = id,
             name = name,
             episode = episode,
-            character = character.map { url -> url.substringAfter("/") },
+            characters = characters.map { url -> url.substringAfter("/") },
             season = season,
             videoURL = getVideoUrlFromSeason(season)
         )

@@ -4,7 +4,7 @@ data class EpisodeModel(
     val id: Int,
     val name: String,
     val episode: String,
-    val character: List<String>,
+    val characters: List<String>,
     val videoURL: String,
     val season: SeasonEpisode
 )
