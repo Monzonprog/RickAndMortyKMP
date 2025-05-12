@@ -26,4 +26,12 @@ class EpisodesViewModel(private val getAllEpisodesUseCase: GetAllEpisodesUseCase
             _state.update { it.copy(episodes = result) }
         }
     }
+
+    fun onPlaySelected(url: String) {
+        _state.update { state -> state.copy(playVideo = url) }
+    }
+
+    fun onCloseVideo() {
+        _state.update { state -> state.copy(playVideo = "") }
+    }
 }

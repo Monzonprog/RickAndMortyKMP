@@ -25,7 +25,7 @@ data class EpisodeResponse(
     }
 
     private fun getSeasonFromEpisodeCode(episode: String): SeasonEpisode {
-        return when{
+        return when {
             episode.startsWith("S01") -> SEASON_1
             episode.startsWith("S02") -> SEASON_2
             episode.startsWith("S03") -> SEASON_3
@@ -37,15 +37,10 @@ data class EpisodeResponse(
         }
     }
 
-    private fun getVideoUrlFromSeason(season: SeasonEpisode) : String {
-        return when (season){
-            SEASON_1 -> "https://www.youtube.com/watch?v=8BEzj2kRjO8&ab_channel=RottenTomatoesTV"
-            SEASON_2 -> "https://www.youtube.com/watch?v=SXwf_9xJu5c&ab_channel=Yusuto"
-            SEASON_3 -> "https://www.youtube.com/watch?v=Bmg2vXOQ3kM&ab_channel=SeriesTrailerMP"
-            SEASON_4 -> "https://www.youtube.com/watch?v=bLI2-v264No&ab_channel=RottenTomatoesTV"
-            SEASON_5 -> "https://www.youtube.com/watch?v=yC1UxW8vcDo&ab_channel=RottenTomatoesTV"
-            SEASON_6 -> "https://www.youtube.com/watch?v=jerFRSQW9g8&ab_channel=RottenTomatoesTV"
-            SEASON_7 -> "https://www.youtube.com/watch?v=PkZtVBNkmso&ab_channel=RottenTomatoesTV"
+    private fun getVideoUrlFromSeason(season: SeasonEpisode): String {
+        return when (season) {
+            SEASON_1, SEASON_3, SEASON_5, SEASON_7 -> "https://firebasestorage.googleapis.com/v0/b/rickmortykmp-b4d37.firebasestorage.app/o/T1.mp4?alt=media&token=00031ad4-ba98-43ad-9a93-5061fd826941"
+            SEASON_2, SEASON_4, SEASON_6 -> "https://firebasestorage.googleapis.com/v0/b/rickmortykmp-b4d37.firebasestorage.app/o/T2.mp4?alt=media&token=0b13f152-5522-46d7-815e-4da1a259b0e5"
             UNKNOWN -> ""
         }
     }
