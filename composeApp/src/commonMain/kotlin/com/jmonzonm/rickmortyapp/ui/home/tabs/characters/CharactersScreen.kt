@@ -3,19 +3,14 @@ package com.jmonzonm.rickmortyapp.ui.home.tabs.characters
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
@@ -33,11 +28,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.paging.LoadState
 import app.cash.paging.compose.LazyPagingItems
 import app.cash.paging.compose.collectAsLazyPagingItems
 import coil3.compose.AsyncImage
 import com.jmonzonm.rickmortyapp.domain.model.CharacterModel
+import com.jmonzonm.rickmortyapp.ui.core.components.PagingLoadingState
+import com.jmonzonm.rickmortyapp.ui.core.components.PagingType
+import com.jmonzonm.rickmortyapp.ui.core.components.PagingWrapper
 import com.jmonzonm.rickmortyapp.ui.core.ex.vertical
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -57,61 +54,37 @@ fun CharactersScreen() {
 
 @Composable
 fun CharactersGridList(characters: LazyPagingItems<CharacterModel>, state: CharactersState) {
-    LazyVerticalGrid(
-        modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
-        columns = GridCells.Fixed(2),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
+    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+        val totalHeight = maxHeight
 
-        item(span = { GridItemSpan(2) }) {
-            Column {
-                Text("Characters", color = Color.Black, fontSize = 24.sp)
-            CharacterOfTheDay(state.characterOfTheDay)
-            }
-        }
-        when {
-            //Carga inicial
-            characters.loadState.refresh is LoadState.Loading && characters.itemCount == 0 -> {
+        Column {
+            LazyVerticalGrid(
+                modifier = Modifier
+                    .height(totalHeight * 0.55f)
+                    .padding(horizontal = 16.dp),
+                columns = GridCells.Fixed(2),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
                 item(span = { GridItemSpan(2) }) {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(64.dp),
-                            color = Color.Red
-                        )
+                    Column {
+                        Text("Characters", color = Color.Black, fontSize = 24.sp)
+                        CharacterOfTheDay(state.characterOfTheDay)
                     }
                 }
             }
 
-            characters.loadState.refresh is LoadState.NotLoading && characters.itemCount == 0 -> {
-                item { Text("No hay personajes :(") }
-            }
-
-            else -> {
-                //Recorreremos los items
-                items(characters.itemCount) { pos ->
-                    characters[pos]?.let { characterModel ->
-                        CharacterItemList(characterModel)
-                    }
-
-                }
-                if (characters.loadState.append is LoadState.Loading) {
-                    item(span = { GridItemSpan(2) }) {
-                        Box(
-                            modifier = Modifier.fillMaxWidth().height(100.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator(
-                                modifier = Modifier.size(64.dp),
-                                color = Color.Red
-                            )
-                        }
-                    }
-                }
-                //
-            }
+            PagingWrapper(
+                pagingType = PagingType.VERTICAL_GRID,
+                pagingItems = characters,
+                initialView = {
+                    PagingLoadingState()
+                },
+                itemView = { CharacterItemList(it) }
+            )
         }
     }
+
 }
 
 @Composable
@@ -130,7 +103,7 @@ fun CharacterItemList(characterModel: CharacterModel) {
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize(),
-            placeholder = painterResource( Res.drawable.rickface)
+            placeholder = painterResource(Res.drawable.rickface)
         )
         Box(
             modifier = Modifier.fillMaxWidth().height(60.dp).background(
@@ -143,7 +116,12 @@ fun CharacterItemList(characterModel: CharacterModel) {
                 )
             ), contentAlignment = Alignment.Center
         ) {
-            Text(text = characterModel.name, color = Color.White, fontSize = 18.sp)
+            Text(
+                text = characterModel.name,
+                color = Color.White,
+                fontSize = 18.sp,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
         }
     }
 }

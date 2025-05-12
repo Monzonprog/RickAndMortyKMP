@@ -7,7 +7,9 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.paging.LoadState
 import app.cash.paging.compose.LazyPagingItems
-import com.jmonzonm.rickmortyapp.ui.core.components.PagingType.*
+import com.jmonzonm.rickmortyapp.ui.core.components.PagingType.COLUMN
+import com.jmonzonm.rickmortyapp.ui.core.components.PagingType.ROW
+import com.jmonzonm.rickmortyapp.ui.core.components.PagingType.VERTICAL_GRID
 
 enum class PagingType {
     ROW, COLUMN, VERTICAL_GRID
@@ -20,7 +22,7 @@ fun <T : Any> PagingWrapper(
     initialView: @Composable () -> Unit = {},
     emptyView: @Composable () -> Unit = {},
     extraItemsView: @Composable () -> Unit = {},
-    itemView: @Composable (T) -> Unit
+    itemView: @Composable (T) -> Unit,
 ) {
     when {
         pagingItems.loadState.refresh is LoadState.Loading && pagingItems.itemCount == 0 -> {
