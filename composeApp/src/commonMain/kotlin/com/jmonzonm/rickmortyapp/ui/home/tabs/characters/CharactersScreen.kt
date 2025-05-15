@@ -3,14 +3,19 @@ package com.jmonzonm.rickmortyapp.ui.home.tabs.characters
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
@@ -44,16 +49,20 @@ import rickmortyapp.composeapp.generated.resources.rickface
 
 @OptIn(KoinExperimentalAPI::class)
 @Composable
-fun CharactersScreen() {
+fun CharactersScreen(navigateToDetail: (CharacterModel)-> Unit) {
     val charactersViewModel = koinViewModel<CharactersViewModel>()
     val state by charactersViewModel.state.collectAsState()
     val characters = state.characters.collectAsLazyPagingItems()
 
-    CharactersGridList(characters, state)
+    CharactersGridList(characters, state, navigateToDetail)
 }
 
 @Composable
-fun CharactersGridList(characters: LazyPagingItems<CharacterModel>, state: CharactersState) {
+fun CharactersGridList(
+    characters: LazyPagingItems<CharacterModel>,
+    state: CharactersState,
+    navigateToDetail: (CharacterModel) -> Unit
+) {
     BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
         val totalHeight = maxHeight
 
@@ -80,7 +89,9 @@ fun CharactersGridList(characters: LazyPagingItems<CharacterModel>, state: Chara
                 initialView = {
                     PagingLoadingState()
                 },
-                itemView = { CharacterItemList(it) }
+                itemView = { CharacterItemList(it) { characterModel ->
+                    navigateToDetail(characterModel)
+                } }
             )
         }
     }
@@ -88,14 +99,14 @@ fun CharactersGridList(characters: LazyPagingItems<CharacterModel>, state: Chara
 }
 
 @Composable
-fun CharacterItemList(characterModel: CharacterModel) {
+fun CharacterItemList(characterModel: CharacterModel, onItemSelected: (CharacterModel) -> Unit) {
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(24))
             .border(2.dp, Color.Green, shape = RoundedCornerShape(0, 24, 0, 24))
             .fillMaxWidth()
             .height(150.dp)
-            .clickable { },
+            .clickable {onItemSelected(characterModel) },
         contentAlignment = Alignment.BottomCenter
     ) {
         AsyncImage(
