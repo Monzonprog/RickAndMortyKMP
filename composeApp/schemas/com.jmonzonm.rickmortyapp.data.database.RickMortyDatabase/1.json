@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "e692de4ca82b1fd769d844437a2bf6ea",
+    "identityHash": "68266fb6ec4fcd3d94360df719cb146f",
     "entities": [
       {
         "tableName": "characteroftheday",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `image` TEXT NOT NULL, `name` TEXT NOT NULL, `isAlive` INTEGER NOT NULL, `selectedDay` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `image` TEXT NOT NULL, `name` TEXT NOT NULL, `isAlive` INTEGER NOT NULL, `selectedDay` TEXT NOT NULL, `species` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -37,6 +37,12 @@
             "columnName": "selectedDay",
             "affinity": "TEXT",
             "notNull": true
+          },
+          {
+            "fieldPath": "species",
+            "columnName": "species",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -49,7 +55,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e692de4ca82b1fd769d844437a2bf6ea')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '68266fb6ec4fcd3d94360df719cb146f')"
     ]
   }
 }

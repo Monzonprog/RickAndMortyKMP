@@ -8,5 +8,13 @@ import com.jmonzonm.rickmortyapp.ui.home.tabs.characters.CharacterOfTheDay
 @Composable
 @Preview
 fun preview(){
-    CharacterOfTheDay(CharacterModel(id = 3, image = "https://rickandmortyapi.com/api/character/avatar/11.jpeg", name = "Prueba", isAlive = true))
+    CharacterOfTheDay(
+        CharacterModel(
+            id = 3,
+            image = "https://rickandmortyapi.com/api/character/avatar/11.jpeg",
+            name = "Prueba",
+            isAlive = true,
+            species = "Humano"
+        )
+    )
 }

@@ -5,9 +5,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,7 +25,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import com.jmonzonm.rickmortyapp.domain.model.CharacterModel
+import com.jmonzonm.rickmortyapp.ui.core.ex.aliveBorder
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
@@ -38,7 +44,7 @@ fun CharacterDetailScreen(characterModel: CharacterModel) {
 
     val state by characterDetailViewModel.uiState.collectAsState()
 
-    Column(modifier = Modifier.fillMaxSize().background(Color.White)) {
+    Column(modifier = Modifier.fillMaxSize().background(Color.Black)) {
         MainHeader(characterModel)
     }
 }
@@ -76,9 +82,41 @@ fun CharacterHeader(characterModel: CharacterModel) {
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = "Especie: Humano",
+                text = "Species: ${characterModel.species}",
                 color = Color.Black
             )
+        }
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(16.dp))
+            Box(contentAlignment = Alignment.TopCenter) {
+                Box(
+                    modifier = Modifier.size(205.dp).clip(CircleShape)
+                        .background(Color.Black.copy(alpha = 0.15f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    AsyncImage(
+                        model = characterModel.image,
+                        contentDescription = null,
+                        modifier = Modifier.size(290.dp).clip(CircleShape)
+                            .aliveBorder(characterModel.isAlive),
+                        contentScale = ContentScale.Crop
+                    )
+                }
+                val aliveCopy = if (characterModel.isAlive) "ALIVE" else "DEAD"
+                val aliveColor = if (characterModel.isAlive) Color.Green else Color.Red
+                Text(
+                    text = aliveCopy,
+                    color = Color.White,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.clip(RoundedCornerShape(30)).background(aliveColor)
+                        .padding(horizontal = 6.dp, vertical = 2.dp)
+                )
+            }
+            Spacer(Modifier.weight(1f))
         }
     }
 }

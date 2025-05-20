@@ -12,7 +12,8 @@ data class CharacterOfTheDayModel(
             name = characterModel.name,
             image = characterModel.image,
             isAlive = characterModel.isAlive,
-            selectedDay = selectedDay
+            selectedDay = selectedDay,
+            species = characterModel.species
         )
     }
 }
