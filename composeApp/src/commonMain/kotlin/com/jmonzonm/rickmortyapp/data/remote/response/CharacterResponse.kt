@@ -23,7 +23,7 @@ data class CharacterResponse(
             species = species,
             gender = gender,
             origin = origin.name,
-            episodes = episode.map { it.substringAfter("/") }
+            episodes = episode.map { it.substringAfterLast("/") }
         )
     }
 }

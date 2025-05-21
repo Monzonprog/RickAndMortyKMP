@@ -2,6 +2,7 @@ package com.jmonzonm.rickmortyapp.data.remote
 
 import com.jmonzonm.rickmortyapp.data.remote.response.CharacterResponse
 import com.jmonzonm.rickmortyapp.data.remote.response.CharactersWrapperResponse
+import com.jmonzonm.rickmortyapp.data.remote.response.EpisodeResponse
 import com.jmonzonm.rickmortyapp.data.remote.response.EpisodesWrappersResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -23,5 +24,13 @@ class ApiService(private val client: HttpClient) {
         return client.get(urlString = "/api/episode") {
             parameter("page", page)
         }.body()
+    }
+
+    suspend fun getEpisodes(episodes: String): List<EpisodeResponse> {
+        return client.get("/api/episode/$episodes").body()
+    }
+
+    suspend fun getSingleEpisode(episode: String): EpisodeResponse {
+        return client.get("/api/episode/$episode").body()
     }
 }

@@ -3,8 +3,11 @@ package com.jmonzonm.rickmortyapp.ui.detail
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.jmonzonm.rickmortyapp.domain.model.CharacterModel
+import com.jmonzonm.rickmortyapp.domain.model.EpisodeModel
 import com.jmonzonm.rickmortyapp.ui.core.ex.aliveBorder
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -36,11 +40,38 @@ fun CharacterDetailScreen(characterModel: CharacterModel) {
         koinViewModel<CharacterDetailViewModel>(parameters = { parametersOf(characterModel) })
 
     val state by characterDetailViewModel.uiState.collectAsState()
+    val scrollState = rememberScrollState()
 
-    Column(modifier = Modifier.fillMaxSize().background(Color.Black)) {
-        MainHeader(characterModel)
-        CharacterInformation(characterModel)
+    Column(modifier = Modifier.fillMaxSize().background(Color.Black).verticalScroll(scrollState)) {
+        MainHeader(state.characterModel)
+        Spacer(modifier = Modifier.height(8.dp))
+        CharacterInformation(state.characterModel)
+        Spacer(modifier = Modifier.height(8.dp))
+        CharacterEpisodesList(state.episodes)
     }
+}
+
+@Composable
+fun CharacterEpisodesList(episodes: List<EpisodeModel>?) {
+    ElevatedCard(modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()) {
+        Box(contentAlignment = Alignment.Center) {
+            if (episodes == null) {
+                CircularProgressIndicator(color = Color.Green)
+            } else {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    episodes.forEach { episode ->
+                        EpisodeItem(episode)
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun EpisodeItem(episode: EpisodeModel) {
+    Text(text = episode.name, color = Color.Black, fontWeight = FontWeight.Bold)
+    Text(text = episode.episode)
 }
 
 @Composable
@@ -49,9 +80,9 @@ fun CharacterInformation(characterModel: CharacterModel) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text("ABOUT THE CHARACTER")
             Spacer(modifier = Modifier.height(4.dp))
-            InformationDetail("Origin", characterModel.origin)
+            InformationDetail("Origin: ", characterModel.origin)
             Spacer(modifier = Modifier.height(2.dp))
-            InformationDetail("Gender", characterModel.gender)
+            InformationDetail("Gender: ", characterModel.gender)
         }
     }
 }
